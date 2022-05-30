@@ -37,3 +37,25 @@ for tr in table.find_all('tr'):
       humidity = tds[9].text
       print("{0:<7} {1:<7} {2:<7}".format(point, temp, humidity))
       data.append([point, temp, humidity])
+    
+
+source = requests.get('https://www.weather.go.kr/w/dust/dust-obs/values.do')
+soup = BeautifulSoup(source.content,"html.parser")
+
+table = soup.find('table',{'class':'table-col'})
+local1 = []
+local2 = []
+jd1 = []
+jd2 = []
+for k in table.find_all('tr'):
+   j = list(k.find_all('td'))
+   for td in j:
+     local1.append(j[0].text)
+     local2.append(j[2].text)
+     jd1.append(j[1].text)
+     jd2.append(j[3].text)
+
+for i in range(15):
+  print(f'{local1[4*i]}지역의 황사 관측값은 {jd1[4*i]}(㎍/㎥)입니다.')
+  print(f'{local2[4*i]}지역의 황사 관측값은 {jd2[4*i]}(㎍/㎥)입니다.')    
+    
